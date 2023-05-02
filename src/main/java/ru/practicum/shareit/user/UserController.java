@@ -30,7 +30,7 @@ public class UserController {
 
 	@PatchMapping("/{userId}")
 	public ResponseEntity<UserDto> requestForUpdate(@RequestBody UserDto userDto,
-									   @PathVariable Integer userId) {
+													@PathVariable Integer userId) {
 		return ResponseEntity.ok(uService.update(userId, userDto));
 	}
 
