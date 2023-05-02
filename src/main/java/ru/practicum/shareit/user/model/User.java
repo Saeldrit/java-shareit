@@ -27,8 +27,4 @@ public class User {
 
 	private String name;
 	private Set<Item> items = new HashSet<>();
-
-	public void addToItems(Item item) {
-		this.items.add(item);
-	}
 }

@@ -7,7 +7,10 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @RequiredArgsConstructor
 @Repository("inMemoryRepository")
@@ -24,11 +27,11 @@ public class InMemoryItemRepository implements ItemRepository<Integer, Item> {
 	@Override
 	public Item updateItem(Integer itemId, Item item) {
 		return memory.computeIfPresent(itemId, (k, v) -> v
-				.withDescription(item.getDescription() == null
+				.withDescription(isNull(item.getDescription())
 						? v.getDescription() : item.getDescription())
-				.withName(item.getName() == null
+				.withName(isNull(item.getName())
 						? v.getName() : item.getName())
-				.withIsAvailable(item.getIsAvailable() == null
+				.withIsAvailable(isNull(item.getIsAvailable())
 						? v.getIsAvailable() : item.getIsAvailable()));
 	}
 
@@ -47,7 +50,7 @@ public class InMemoryItemRepository implements ItemRepository<Integer, Item> {
 	}
 
 	public boolean containsWordIgnoreCase(String sentence, String word) {
-		if (sentence == null || (word == null || word.isEmpty())) {
+		if (isNull(sentence) || (isNull(word) || word.isEmpty())) {
 			return false;
 		}
 		String sentenceLower = sentence.toLowerCase();

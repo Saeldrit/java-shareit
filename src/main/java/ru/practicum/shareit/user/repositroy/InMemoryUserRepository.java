@@ -7,6 +7,8 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
 
+import static java.util.Objects.isNull;
+
 @Slf4j
 @Repository("uMemoryRepository")
 public class InMemoryUserRepository implements UserRepository<Integer, User> {
@@ -41,8 +43,8 @@ public class InMemoryUserRepository implements UserRepository<Integer, User> {
 			hash.remove(v);
 			hash.add(owner);
 			return owner.withId(id)
-					.withEmail(owner.getEmail() == null ? v.getEmail() : owner.getEmail())
-					.withName(owner.getName() == null ? v.getName() : owner.getName());
+					.withEmail(isNull(owner.getEmail()) ? v.getEmail() : owner.getEmail())
+					.withName(isNull(owner.getName()) ? v.getName() : owner.getName());
 		});
 	}
 
