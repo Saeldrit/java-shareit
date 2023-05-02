@@ -10,6 +10,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repositroy.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class AppUserService implements UserService<Integer, UserDto> {
 	@Override
 	public UserDto searchById(Integer id) {
 		User byId = uMemoryRepository.findById(id);
-		if (byId == null) {
+		if (Objects.isNull(byId)) {
 			throw new EntityNotFoundException(String.format("Owner by id '%d' not found", id));
 		}
 		return mapper.convertToDto(byId, UserDto.class);
