@@ -22,8 +22,8 @@ public class ItemController {
 	private final AppItemService iService;
 
 	@PostMapping
-	public ResponseEntity<ItemDto> requestToAdd(@RequestHeader("X-Sharer-User-Id") Integer ownerId
-			, @Valid @RequestBody ItemDto itemDto) {
+	public ResponseEntity<ItemDto> requestToAdd(@RequestHeader("X-Sharer-User-Id") Integer ownerId,
+												@Valid @RequestBody ItemDto itemDto) {
 		return ResponseEntity.ok(iService.registerThing(ownerId, itemDto));
 	}
 
