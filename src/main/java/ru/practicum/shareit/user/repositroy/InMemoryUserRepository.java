@@ -35,7 +35,7 @@ public class InMemoryUserRepository implements UserRepository<Integer, User> {
 	@Override
 	public User update(Integer id, User owner) {
 		return memory.computeIfPresent(id, (k, v) -> {
-			String em = owner.getEmail() == null ? v.getEmail() : owner.getEmail();
+			String em = isNull(owner.getEmail()) ? v.getEmail() : owner.getEmail();
 			if (email.contains(em)) {
 				throw new DuplicateEmailException(
 						String.format("ERROR user with such an email '%s' exists", em));
@@ -66,7 +66,7 @@ public class InMemoryUserRepository implements UserRepository<Integer, User> {
 	@Override
 	public User remove(Integer id) {
 		User user = memory.remove(id);
-		return user != null ?
+		return !isNull(user) ?
 				(hash.remove(user) && email.remove(user.getEmail())
 						? user : null) : null;
 	}
