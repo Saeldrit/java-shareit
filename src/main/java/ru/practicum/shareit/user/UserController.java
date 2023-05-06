@@ -10,8 +10,6 @@ import ru.practicum.shareit.user.service.UserService;
 import javax.validation.Valid;
 import java.util.List;
 
-import static java.util.Optional.ofNullable;
-
 /**
  * TODO Sprint add-controllers.
  */
