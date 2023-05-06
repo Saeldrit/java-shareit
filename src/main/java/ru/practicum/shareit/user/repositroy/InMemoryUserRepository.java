@@ -14,16 +14,16 @@ import static java.util.Objects.isNull;
 public class InMemoryUserRepository implements UserRepository<Integer, User> {
 
 	private final Map<Integer, User> memory = new HashMap<>();
-	private final Set<User> hash = new HashSet<>();
-	private final Set<String> email = new HashSet<>();
+	private final Set<User> uniqueUsers = new HashSet<>();
+	private final Set<String> uniqueEmails = new HashSet<>();
 	private int id = 0;
 
 	@Override
 	public User create(User owner) {
-		if (hash.add(owner)) {
+		if (uniqueUsers.add(owner)) {
 			User userWithId = owner.withId(++id);
 			memory.putIfAbsent(userWithId.getId(), userWithId);
-			email.add(owner.getEmail());
+			uniqueEmails.add(owner.getEmail());
 		} else {
 			throw new DuplicateEmailException(
 					String.format("ERROR user with such an email '%s' exists", owner.getEmail())
@@ -36,12 +36,12 @@ public class InMemoryUserRepository implements UserRepository<Integer, User> {
 	public User update(Integer id, User owner) {
 		return memory.computeIfPresent(id, (k, v) -> {
 			String em = isNull(owner.getEmail()) ? v.getEmail() : owner.getEmail();
-			if (email.contains(em)) {
+			if (uniqueEmails.contains(em)) {
 				throw new DuplicateEmailException(
 						String.format("ERROR user with such an email '%s' exists", em));
 			}
-			hash.remove(v);
-			hash.add(owner);
+			uniqueUsers.remove(v);
+			uniqueUsers.add(owner);
 			return owner.withId(id)
 					.withEmail(isNull(owner.getEmail()) ? v.getEmail() : owner.getEmail())
 					.withName(isNull(owner.getName()) ? v.getName() : owner.getName());
@@ -67,7 +67,7 @@ public class InMemoryUserRepository implements UserRepository<Integer, User> {
 	public User remove(Integer id) {
 		User user = memory.remove(id);
 		return !isNull(user) ?
-				(hash.remove(user) && email.remove(user.getEmail())
+				(uniqueUsers.remove(user) && uniqueEmails.remove(user.getEmail())
 						? user : null) : null;
 	}
 }

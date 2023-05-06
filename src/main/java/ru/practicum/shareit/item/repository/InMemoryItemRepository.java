@@ -43,12 +43,12 @@ public class InMemoryItemRepository implements ItemRepository<Integer, Item> {
 	public List<Item> searchAllItemsByKey(String key) {
 		return memory.values()
 				.stream()
-				.filter(item -> containsWordIgnoreCase(item.getDescription(), key))
+				.filter(item -> containsIgnoreCase(item.getDescription(), key))
 				.filter(Item::getIsAvailable)
 				.collect(Collectors.toList());
 	}
 
-	public boolean containsWordIgnoreCase(String sentence, String word) {
+	public boolean containsIgnoreCase(String sentence, String word) {
 		if (isNull(sentence) || (isNull(word) || word.isEmpty())) {
 			return false;
 		}

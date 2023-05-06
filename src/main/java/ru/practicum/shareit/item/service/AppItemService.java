@@ -15,16 +15,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service("iService")
+@Service("itemService")
 public class AppItemService implements ItemService<Integer, ItemDto> {
 
 	private final InMemoryItemRepository itemMemoryRepository;
-	private final UserService<Integer, UserDto> uService;
+	private final UserService<Integer, UserDto> userService;
 	private final Mapper<Item, ItemDto> mapper;
 
 	@Override
 	public ItemDto registerThing(Integer ownerId, ItemDto itemDto) {
-		UserDto dto = uService.searchById(ownerId);
+		UserDto dto = userService.searchById(ownerId);
 		itemDto.setOwner(dto);
 
 		Item itemPojo = itemMemoryRepository.saveThing(
@@ -33,13 +33,13 @@ public class AppItemService implements ItemService<Integer, ItemDto> {
 		ItemDto itemDto1 = mapper.convertToDto(itemPojo, ItemDto.class);
 
 		dto.addToItems(itemDto1);
-		uService.updateContent(dto);
+		userService.updateContent(dto);
 		return itemDto1;
 	}
 
 	@Override
 	public ItemDto updateItem(Integer ownerId, Integer itemId, ItemDto itemDto) {
-		UserDto byId = uService.searchById(ownerId);
+		UserDto byId = userService.searchById(ownerId);
 		Item item = itemMemoryRepository.searchById(itemId);
 
 		if (item.getOwner().getId().equals(ownerId)) {
@@ -52,7 +52,7 @@ public class AppItemService implements ItemService<Integer, ItemDto> {
 		ItemDto itemDto1 = mapper.convertToDto(item, ItemDto.class);
 
 		byId.addToItems(itemDto1);
-		uService.updateContent(byId);
+		userService.updateContent(byId);
 		return itemDto1;
 	}
 
@@ -63,7 +63,7 @@ public class AppItemService implements ItemService<Integer, ItemDto> {
 
 	@Override
 	public List<ItemDto> viewAllItems(Integer ownerId) {
-		return new ArrayList<>(uService.searchById(ownerId).getItems());
+		return new ArrayList<>(userService.searchById(ownerId).getItems());
 	}
 
 	@Override

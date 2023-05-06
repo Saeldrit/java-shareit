@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 public class Item {
 	private Integer id;
 
-	@NotNull
 	@NotEmpty
 	private String name;
 

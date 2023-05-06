@@ -21,31 +21,31 @@ import static java.util.Optional.ofNullable;
 @Slf4j
 public class UserController {
 
-	private final UserService<Integer, UserDto> uService;
+	private final UserService<Integer, UserDto> userService;
 
 	@PostMapping
 	public ResponseEntity<UserDto> requestToAdd(@Valid @RequestBody UserDto userDto) {
-		return ResponseEntity.ok(uService.create(userDto));
+		return ResponseEntity.ok(userService.create(userDto));
 	}
 
 	@PatchMapping("/{userId}")
 	public ResponseEntity<UserDto> requestForUpdate(@RequestBody UserDto userDto,
 													@PathVariable Integer userId) {
-		return ResponseEntity.ok(uService.update(userId, userDto));
+		return ResponseEntity.ok(userService.update(userId, userDto));
 	}
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> requestToView(@PathVariable Integer userId) {
-		return ResponseEntity.ok(uService.searchById(userId));
+		return ResponseEntity.ok(userService.searchById(userId));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> requestToUnload() {
-		return ResponseEntity.of(ofNullable(uService.unload()));
+		return ResponseEntity.ok(userService.unload());
 	}
 
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<UserDto> requestToRemove(@PathVariable Integer userId) {
-		return ResponseEntity.ok(uService.remove(userId));
+		return ResponseEntity.ok(userService.remove(userId));
 	}
 }

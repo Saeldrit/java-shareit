@@ -4,7 +4,7 @@ import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +21,7 @@ import java.util.Set;
 public class User {
 	private Integer id;
 
-	@NotNull
+	@NotEmpty
 	@Email
 	private String email;
 

@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 public class ItemDto {
 	private Integer id;
 
-	@NotNull
 	@NotEmpty
 	private String name;
 

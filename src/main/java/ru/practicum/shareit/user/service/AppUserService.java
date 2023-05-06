@@ -10,12 +10,13 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repositroy.UserRepository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @RequiredArgsConstructor
 @Slf4j
-@Service("uService")
+@Service("userService")
 public class AppUserService implements UserService<Integer, UserDto> {
 
 	private final UserRepository<Integer, User> uMemoryRepository;
@@ -42,7 +43,7 @@ public class AppUserService implements UserService<Integer, UserDto> {
 	@Override
 	public UserDto searchById(Integer id) {
 		User byId = uMemoryRepository.findById(id);
-		if (Objects.isNull(byId)) {
+		if (isNull(byId)) {
 			throw new EntityNotFoundException(String.format("Owner by id '%d' not found", id));
 		}
 		return mapper.convertToDto(byId, UserDto.class);
@@ -57,6 +58,10 @@ public class AppUserService implements UserService<Integer, UserDto> {
 
 	@Override
 	public UserDto remove(Integer id) {
-		return mapper.convertToDto(uMemoryRepository.remove(id), UserDto.class);
+		User remove = uMemoryRepository.remove(id);
+		if (isNull(remove)) {
+			throw new EntityNotFoundException(String.format("Owner by id '%d' not found", id));
+		}
+		return mapper.convertToDto(remove, UserDto.class);
 	}
 }

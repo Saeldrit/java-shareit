@@ -23,20 +23,20 @@ public class ErrorHandler {
 			DuplicateEmailException.class})
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ErrorResponse handlerUserValid(Exception exception) {
-		return new ErrorResponse("Valid Exception", exception.getMessage());
+		return new ErrorResponse("Duplicate Email Exception", exception.getMessage());
 	}
 
 	@ExceptionHandler({
 			MethodArgumentNotValidException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ErrorResponse handleValidationException(Exception exception) {
+	public ErrorResponse handlerValidationException(Exception exception) {
 		return new ErrorResponse("Valid Exception", exception.getMessage());
 	}
 
 	@ExceptionHandler({EntityNotFoundException.class,
 			RequestWithoutAccessPermission.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ErrorResponse handlerEntityFoundException(Exception exception) {
+	public ErrorResponse handleEntityNotFoundOrAccessDenied(Exception exception) {
 		return new ErrorResponse("Found exception", exception.getMessage());
 	}
 }

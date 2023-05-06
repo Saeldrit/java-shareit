@@ -19,34 +19,34 @@ import java.util.List;
 @Slf4j
 public class ItemController {
 
-	private final AppItemService iService;
+	private final AppItemService itemService;
 
 	@PostMapping
 	public ResponseEntity<ItemDto> requestToAdd(@RequestHeader("X-Sharer-User-Id") Integer ownerId,
 												@Valid @RequestBody ItemDto itemDto) {
-		return ResponseEntity.ok(iService.registerThing(ownerId, itemDto));
+		return ResponseEntity.ok(itemService.registerThing(ownerId, itemDto));
 	}
 
 	@PatchMapping("/{itemId}")
 	public ResponseEntity<ItemDto> requestForUpdate(@RequestHeader("X-Sharer-User-Id") Integer ownerId,
 													@PathVariable Integer itemId,
 													@RequestBody ItemDto itemDto) {
-		return ResponseEntity.ok(iService.updateItem(ownerId, itemId, itemDto));
+		return ResponseEntity.ok(itemService.updateItem(ownerId, itemId, itemDto));
 	}
 
 	@GetMapping("/{itemId}")
 	public ResponseEntity<ItemDto> requestToView(@PathVariable Integer itemId) {
-		return ResponseEntity.ok(iService.view(itemId));
+		return ResponseEntity.ok(itemService.view(itemId));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<ItemDto>> requestToViewAllThings(
 			@RequestHeader("X-Sharer-User-Id") Integer ownerId) {
-		return ResponseEntity.ok(iService.viewAllItems(ownerId));
+		return ResponseEntity.ok(itemService.viewAllItems(ownerId));
 	}
 
 	@GetMapping("/search")
 	public ResponseEntity<List<ItemDto>> requestToSearchForItemByKey(@RequestParam String text) {
-		return ResponseEntity.ok(iService.viewItemByKey(text));
+		return ResponseEntity.ok(itemService.viewItemByKey(text));
 	}
 }
